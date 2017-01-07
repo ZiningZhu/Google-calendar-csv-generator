@@ -3,8 +3,8 @@ from datetime import date, timedelta
 import csv
 
 def main():
-    starting_date = date(2016, 9, 12) # Sep 12
-    ending_day = date(2016, 12, 10) # Dec 10
+    starting_date = date(2017, 1, 9) # Sep 12
+    ending_day = date(2017, 4, 7) # Dec 10
 
     f = open('timetable.csv', 'r')
     shead = f.readline()
@@ -16,8 +16,9 @@ def main():
         s = f.readline()
     f.close()
 
+    '''
     complete_lists = []
-    d = starting_date # The starting date of each week 
+    d = starting_date # The starting date of each week
     week = 1
     while(d < ending_day):
         print "week #%d" %week
@@ -48,6 +49,22 @@ def main():
         week += 1
         td = timedelta(days=7)
         d += td
+    '''
+    complete_lists = []
+    d = starting_date
+    m2d = {'M': 0, 'T': 1, 'W': 2, 'R': 3, 'F': 4}
+    while (d < ending_day):
+        #print "d.weekday()=", str(d.weekday())
+        day = d.weekday()
+        for elem in sl_all_courses:
+            entry = []
+            entry[:] = elem[:]
+            if (m2d[entry[1]] == d.weekday()):
+                ds = format("%02d/%02d/%02d" %(d.month, d.day, d.year))
+                entry[1] = ds
+                entry[3] = ds
+                complete_lists.append(entry)
+        d += timedelta(days=1)
 
     f = open('output.csv', 'w')
     wr = csv.writer(f, quoting=csv.QUOTE_ALL)
